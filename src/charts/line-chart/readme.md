@@ -6,15 +6,15 @@ config:
     value: 500
     type: number
     description: Width of the chart
-    min: 100
-    max: 1000
+    min: 500
+    max: 800
 
   height:
     value: 300
     type: number
     description: Height of the chart
-    min: 100
-    max: 1000
+    min: 300
+    max: 900
 
   axisSuffix:
     value: "people"
@@ -55,7 +55,7 @@ config:
     description: Representation for null values
 
   tickFormatStyle:
-    value: ".2s"
+    value: ".1s"
     type: string
     description: Format style for tick labels
 

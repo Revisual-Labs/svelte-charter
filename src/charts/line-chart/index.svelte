@@ -27,7 +27,7 @@
 	}
 	$: xAxisKey = $VariableStore.xAxisKey.value;
 	$: numberOfTicks = $VariableStore.numberOfTicks.value;
-	$: nullValue = $VariableStore.nullValue.value;
+	export let nullValue = $VariableStore.nullValue.value;
 	$: tickFormatStyle = $VariableStore.tickFormatStyle.value;
 	$: toolTipFormatStyle = $VariableStore.toolTipFormatStyle.value;
 	$: yAxisPosition = $VariableStore.yAxisPosition.value;
@@ -42,6 +42,7 @@
 
 	const keys = Object.keys(dataConfig);
 
+
 	// Replace "NULL" in data with null for each key and make the rest numbers
 	data.forEach((d) => {
 		keys.forEach((key) => {
@@ -53,10 +54,13 @@
 		});
 	});
 
-	// get the max value of the data for the y axis for the keys
-	let yDomain = extent(data, (d) => keys.reduce((acc, key) => Math.max(acc, d[key]), 0));
 
-	let xTicks = data.map((d) => d[xAxisKey]);
+	// get the max value of the data for the y axis for the keys
+	let yDomain = extent(data, (d) =>
+		keys.reduce((acc, key) => Math.max(acc, d[key]), 0)
+	);
+
+	$: xTicks = data.map((d) => d[xAxisKey]);
 
 	$: xScale = scaleLinear()
 		.domain(extent(xTicks))
@@ -73,6 +77,7 @@
 			const linePath = data
 				.map((d) => {
 					if (d[key] !== null) {
+						// console.log([xScale(d[xAxisKey]), yScale(d[key])])
 						return [xScale(d[xAxisKey]), yScale(d[key])];
 					} else {
 						return null;
@@ -80,6 +85,7 @@
 				})
 				.filter((d) => d !== null)
 				.map((d, i) => {
+					console.log(d);
 					if (i === 0) {
 						breakCount = 0;
 						return `M ${d[0]} ${d[1]}`;
@@ -88,11 +94,11 @@
 						return `L ${d[0]} ${d[1]}`;
 					}
 				})
-				.join(' ');
+				.join(" ");
 
 			return {
 				key,
-				path: linePath
+				path: linePath,
 			};
 		});
 	}
@@ -119,27 +125,32 @@
 					.map((d) => {
 						if (d[key] !== null) {
 							return {
-								coordinates: [xScale(d[xAxisKey]), yScale(d[key])],
+								coordinates: [
+									xScale(d[xAxisKey]),
+									yScale(d[key]),
+								],
 								value: d[key],
-								xAxis: d[xAxisKey]
+								xAxis: d[xAxisKey],
 							};
 						} else {
 							return null;
 						}
 					})
-					.filter((d) => d !== null)
+					.filter((d) => d !== null),
 			};
 		});
 	}
 
 	// Draw delaunay compution from all keys and points in point
-	$: delaunay = Delaunay.from(points.flatMap((d) => d.points.map((p) => p.coordinates)));
+	$: delaunay = Delaunay.from(
+		points.flatMap((d) => d.points.map((p) => p.coordinates))
+	);
 
 	$: voronoi = delaunay.voronoi([
 		0,
 		0,
 		width - padding.left - padding.right + 30,
-		height - padding.top - padding.bottom + 30
+		height - padding.top - padding.bottom + 30,
 	]);
 
 	// I want to combine the data and the voronoi
@@ -151,7 +162,7 @@
 				coordinates: p.coordinates,
 				value,
 				xAxis,
-				triangle: delaunay.triangles[i]
+				triangle: delaunay.triangles[i],
 			};
 		});
 	});
@@ -159,13 +170,13 @@
 	let showTooltip = false;
 	let showCircle;
 	let tooltipData = {
-		key: '',
-		value: '',
+		key: "",
+		value: "",
 		x: 0,
 		y: 0,
-		lineColor: '',
-		tooltipSuffix: '',
-		year: 0
+		lineColor: "",
+		tooltipSuffix: "",
+		year: 0,
 	};
 	function handleMousemove(event, d) {
 		// d is index of the triangle
@@ -177,7 +188,7 @@
 			y: d.coordinates[1],
 			lineColor,
 			tooltipSuffix: dataConfig[d.key].tooltipSuffix,
-			year: d.xAxis
+			year: d.xAxis,
 		};
 		showTooltip = true;
 		showCircle = `show-${d.value}-${d.xAxis}`;
@@ -185,7 +196,7 @@
 
 	function handleMouseout(event, d) {
 		showTooltip = false;
-		showCircle = '';
+		showCircle = "";
 	}
 </script>
 
@@ -252,8 +263,12 @@
 			>
 				{#each yScale.ticks(numberOfTicks) as tick}
 					<line
-						x1={yAxisPosition === 'left' ? padding.left - 5 : width - padding.right + 8}
-						x2={yAxisPosition === 'left' ? padding.left : width - padding.right + 3}
+						x1={yAxisPosition === "left"
+							? padding.left - 5
+							: width - padding.right + 8}
+						x2={yAxisPosition === "left"
+							? padding.left
+							: width - padding.right + 3}
 						y1={yScale(tick)}
 						y2={yScale(tick)}
 						stroke-width={strokeWidth}
@@ -261,17 +276,23 @@
 					/>
 					<text
 						class="tick"
-						x={yAxisPosition === 'left' ? padding.left - 10 : width - padding.right + 10}
+						x={yAxisPosition === "left"
+							? padding.left - 10
+							: width - padding.right + 10}
 						y={yScale(tick)}
-						text-anchor={yAxisPosition === 'left' ? 'end' : 'start'}
+						text-anchor={yAxisPosition === "left" ? "end" : "start"}
 						dominant-baseline="middle"
 					>
 						<tspan>{tickFormat(tick)}</tspan>
 						<!-- if last tick -->
-						{#if yScale.ticks(numberOfTicks).indexOf(tick) === numberOfTicks - 1}
+						{#if yScale
+							.ticks(numberOfTicks)
+							.indexOf(tick) === numberOfTicks - 1}
 							<!-- Add a line below the last tick -->
 							<tspan
-								x={yAxisPosition === 'left' ? padding.left - 5 : width - padding.right + 12}
+								x={yAxisPosition === "left"
+									? padding.left - 5
+									: width - padding.right + 12}
 								y={yScale(tick) + 5}
 								dominant-baseline="hanging"
 							>
@@ -304,7 +325,9 @@
 							r="3"
 							fill={dataConfig[key].color}
 							style="pointer-events: none;"
-							opacity={showCircle === `show-${value}-${xAxis}` ? 1 : 0}
+							opacity={showCircle === `show-${value}-${xAxis}`
+								? 1
+								: 0}
 						/>
 					{/each}
 				</g>
@@ -320,12 +343,13 @@
 		display: {showTooltip ? 'block' : 'none'};
 	"
 	>
-		<p class="year">{tooltipData.year}</p>
+	<p class="year">{tooltipData.year}</p>
 
-		<h4 style="color: {tooltipData.lineColor} ">
+	<h4 style="color: {tooltipData.lineColor} ">
 			{tooltipFormat(tooltipData.value)}
 		</h4>
 		<p>{tooltipData.tooltipSuffix}</p>
+
 	</div>
 </div>
 
@@ -365,7 +389,8 @@
 		background-color: #ffffff;
 		border: 1px solid #d1d5db;
 		border-radius: 0.5rem;
-		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+			0 1px 2px 0 rgba(0, 0, 0, 0.06);
 		color: #111827;
 
 		font-size: 0.475rem;
@@ -378,6 +403,8 @@
 		z-index: 1;
 		border-left: 0.25rem solid;
 	}
+
+
 
 	h4 {
 		/* Remove padding and margins */
