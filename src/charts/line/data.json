@@ -1,0 +1,100 @@
+[
+    {
+        "Year_R": 2008,
+        "Conflict_IDPs": "NULL",
+        "Disaster_IDPs": "NULL",
+        "ConflictNew_IDPs": "NULL",
+        "DisasterNew_IDPs": 3400
+    },
+    {
+        "Year_R": 2009,
+        "Conflict_IDPs": 297000,
+        "Disaster_IDPs": "NULL",
+        "ConflictNew_IDPs": "NULL",
+        "DisasterNew_IDPs": 28000
+    },
+    {
+        "Year_R": 2010,
+        "Conflict_IDPs": 352000,
+        "Disaster_IDPs": "NULL",
+        "ConflictNew_IDPs": 102000,
+        "DisasterNew_IDPs": 71000
+    },
+    {
+        "Year_R": 2011,
+        "Conflict_IDPs": 450000,
+        "Disaster_IDPs": "NULL",
+        "ConflictNew_IDPs": 186000,
+        "DisasterNew_IDPs": 3000
+    },
+    {
+        "Year_R": 2012,
+        "Conflict_IDPs": 492000,
+        "Disaster_IDPs": "NULL",
+        "ConflictNew_IDPs": 100000,
+        "DisasterNew_IDPs": 30000
+    },
+    {
+        "Year_R": 2013,
+        "Conflict_IDPs": 631000,
+        "Disaster_IDPs": "NULL",
+        "ConflictNew_IDPs": 124000,
+        "DisasterNew_IDPs": 15000
+    },
+    {
+        "Year_R": 2014,
+        "Conflict_IDPs": 805000,
+        "Disaster_IDPs": "NULL",
+        "ConflictNew_IDPs": 156000,
+        "DisasterNew_IDPs": 13000
+    },
+    {
+        "Year_R": 2015,
+        "Conflict_IDPs": 1174000,
+        "Disaster_IDPs": "NULL",
+        "ConflictNew_IDPs": 335000,
+        "DisasterNew_IDPs": 71000
+    },
+    {
+        "Year_R": 2016,
+        "Conflict_IDPs": 1553000,
+        "Disaster_IDPs": "NULL",
+        "ConflictNew_IDPs": 653000,
+        "DisasterNew_IDPs": 7400
+    },
+    {
+        "Year_R": 2017,
+        "Conflict_IDPs": 1286000,
+        "Disaster_IDPs": "NULL",
+        "ConflictNew_IDPs": 474000,
+        "DisasterNew_IDPs": 27000
+    },
+    {
+        "Year_R": 2018,
+        "Conflict_IDPs": 2598000,
+        "Disaster_IDPs": "NULL",
+        "ConflictNew_IDPs": 372000,
+        "DisasterNew_IDPs": 435000
+    },
+    {
+        "Year_R": 2019,
+        "Conflict_IDPs": 2993000,
+        "Disaster_IDPs": 1198000,
+        "ConflictNew_IDPs": 461000,
+        "DisasterNew_IDPs": 117000
+    },
+    {
+        "Year_R": 2020,
+        "Conflict_IDPs": 3547000,
+        "Disaster_IDPs": 1390000,
+        "ConflictNew_IDPs": 404000,
+        "DisasterNew_IDPs": 46000
+    },
+    {
+        "Year_R": 2021,
+        "Conflict_IDPs": 4314000,
+        "Disaster_IDPs": 1390000,
+        "ConflictNew_IDPs": 723000,
+        "DisasterNew_IDPs": 25000
+    }
+]
