@@ -1,24 +1,27 @@
 <script>
-	// A list of all the pages in the docs
-	// All the pages are in the src/charts folder
-	// Each folder in src/charts is a page
-	// Get all the folders in src/charts
-	const pages = import.meta.glob('/src/charts/**/index.svelte');
+	/**
+	 * Represents a chart object with title and path properties.
+	 * @typedef {Object} ChartObject
+	 * @property {string} title - The title of the chart.
+	 * @property {string} path - The slugified path of the chart.
+	 */
 
-	const links = Object.keys(pages).map((page) => {
-		const regex = /src\/charts\/(.*)\/index.svelte/;
-		const match = page.match(regex);
-		if (!match) return;
-		return match[1];
-	});
+	/**
+	 * @type {ChartObject[]}
+	 */
+	export let list = [];
 </script>
 
 <nav>
-	<ul>
-		{#each links as link}
-			<li>
-				<a href={`/docs/${link}`}>{link}</a>
-			</li>
+	<ul class="flex flex-col py-6">
+		{#each list as link}
+			<a class="font-regular" href={`/docs/${link.path}`}>
+				<li
+					class="py-2 px-6 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 ease-in-out"
+				>
+					{link.title}
+				</li>
+			</a>
 		{/each}
 	</ul>
 </nav>

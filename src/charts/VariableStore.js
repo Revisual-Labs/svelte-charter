@@ -1,3 +1,5 @@
 import { writable } from 'svelte/store';
-
-export const VariableStore = writable([]);
+/**
+ * @type {import('svelte/store').Writable<Record<string, any>>}
+ */
+export const VariableStore = writable({});

@@ -1,10 +1,13 @@
 <script>
 	import DocsSidebarNav from './DocsSidebarNav.svelte';
+	export let data;
 </script>
 
-<div class="border-b">
-	<aside>
-		<DocsSidebarNav />
+<main class="flex gap-7 flex-grow">
+	<aside class="bg-white min-w-[15%]">
+		<DocsSidebarNav list={data.props.charts} />
 	</aside>
-	<slot />
-</div>
+	<section class="flex-1">
+		<slot />
+	</section>
+</main>

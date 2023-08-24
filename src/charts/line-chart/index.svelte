@@ -4,25 +4,41 @@
 	import { VariableStore } from '../VariableStore';
 
 	import data from './data.json';
-	$: dataConfig = $VariableStore[0].value;
-	$: width = $VariableStore[1].value;
-	$: height = $VariableStore[2].value;
-	$: axisSuffix = $VariableStore[3].value;
-	$: padding = $VariableStore[4].value;
-	$: xAxisKey = $VariableStore[5].value;
-	$: numberOfTicks = $VariableStore[6].value;
-	$: nullValue = $VariableStore[7].value;
-	$: tickFormatStyle = $VariableStore[8].value;
-	$: toolTipFormatStyle = $VariableStore[9].value;
-	$: yAxisPosition = $VariableStore[10].value;
-	$: fontSize = $VariableStore[11].value;
-	$: axisStroke = $VariableStore[12].value;
-	$: strokeWidth = $VariableStore[13].value;
-	$: smallWidthThreshold = $VariableStore[14].value;
+
+	let dataConfig = {
+        Conflict_IDPs: {
+            color: "#006464",
+            tooltipSuffix: "due to conflict",
+        },
+        Disaster_IDPs: {
+            color: "#FFB03B",
+            tooltipSuffix: "due to disaster",
+        },
+    };
+
+	$: width = $VariableStore.width.value;
+	$: height = $VariableStore.height.value;
+	$: axisSuffix = $VariableStore.axisSuffix.value;
+	$: padding = {
+		top: $VariableStore.padding.top.value,
+		right: $VariableStore.padding.right.value,
+		bottom: $VariableStore.padding.bottom.value,
+		left: $VariableStore.padding.left.value
+	}
+	$: xAxisKey = $VariableStore.xAxisKey.value;
+	$: numberOfTicks = $VariableStore.numberOfTicks.value;
+	$: nullValue = $VariableStore.nullValue.value;
+	$: tickFormatStyle = $VariableStore.tickFormatStyle.value;
+	$: toolTipFormatStyle = $VariableStore.toolTipFormatStyle.value;
+	$: yAxisPosition = $VariableStore.yAxisPosition.value;
+	$: fontSize = $VariableStore.fontSize.value;
+	$: axisStroke = $VariableStore.axisStroke.value;
+	$: strokeWidth = $VariableStore.strokeWidth.value;
+	$: smallWidthThreshold = $VariableStore.smallWidthThreshold.value;
 	let breakCount = 0;
 
-	const tickFormat = format(tickFormatStyle);
-	const tooltipFormat = format(toolTipFormatStyle);
+	$: tickFormat = format(tickFormatStyle);
+	$: tooltipFormat = format(toolTipFormatStyle);
 
 	const keys = Object.keys(dataConfig);
 
