@@ -12,7 +12,7 @@
 	export let list = [];
 </script>
 
-<nav>
+<nav >
 	<ul class="flex flex-col py-6">
 		{#each list as link}
 			<a class="font-regular" href={`/docs/${link.path}`}>

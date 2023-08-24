@@ -16,7 +16,7 @@
         },
     };
 
-	$: width = $VariableStore.width.value;
+	export let width = $VariableStore.width.value;
 	$: height = $VariableStore.height.value;
 	$: axisSuffix = $VariableStore.axisSuffix.value;
 	$: padding = {
@@ -85,7 +85,6 @@
 				})
 				.filter((d) => d !== null)
 				.map((d, i) => {
-					console.log(d);
 					if (i === 0) {
 						breakCount = 0;
 						return `M ${d[0]} ${d[1]}`;
