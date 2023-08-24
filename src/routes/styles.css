@@ -24,3 +24,48 @@ body {
 	background-color: var(--color-bg-1);
 	background-size: 100vw 100vh;
 }
+
+pre {
+	padding: 1rem;
+	font-size: 0.9rem;
+	margin: 1rem 0;
+}
+
+/* code that is not in pre */
+:not(pre) > code {
+	padding: 0.2rem 0.4rem;
+	font-size: 0.9rem;
+	background-color:#eae8e8;
+	border-radius: 0.2rem;
+	color: var(--color-theme-1);
+}
+
+h1 {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin: 1rem 0;
+}
+
+h2 {
+	font-size: 2rem;
+	font-weight: 700;
+	margin: 1rem 0;
+}
+
+h3 {
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin: 1rem 0;
+}
+
+h4 {
+	font-size: 1.25rem;
+	font-weight: 700;
+	margin: 1rem 0;
+}
+
+p {
+	font-size: 1rem;
+	line-height: 1.9;
+	margin: 1rem 0;
+}

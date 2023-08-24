@@ -8,14 +8,17 @@ import { page } from '$app/stores';
 export async function load({ params }) {
 
     const component = await import(`../../../charts/${params.chart}/index.svelte`);
-    const {metadata} = await import(`../../../charts/${params.chart}/readme.md`);
+    const {metadata } = await import(`../../../charts/${params.chart}/readme.md`);
+    const post = await import(`../../../charts/${params.chart}/readme.md`);
     
     // set variables in the store
    VariableStore.set(metadata.config);
+   console.log(metadata);
     return {
         props: {
             component: component.default,
-            metadata: metadata
+            metadata: metadata,
+            content: post.default
         }
     };
 

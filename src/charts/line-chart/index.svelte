@@ -16,7 +16,7 @@
         },
     };
 
-	export let width = $VariableStore.width.value;
+	export let width = 500;
 	$: height = $VariableStore.height.value;
 	$: axisSuffix = $VariableStore.axisSuffix.value;
 	$: padding = {
@@ -31,7 +31,7 @@
 	$: tickFormatStyle = $VariableStore.tickFormatStyle.value;
 	$: toolTipFormatStyle = $VariableStore.toolTipFormatStyle.value;
 	$: yAxisPosition = $VariableStore.yAxisPosition.value;
-	$: fontSize = $VariableStore.fontSize.value;
+	$: fontSize = $VariableStore.fontSize.value + 'px';
 	$: axisStroke = $VariableStore.axisStroke.value;
 	$: strokeWidth = $VariableStore.strokeWidth.value;
 	$: smallWidthThreshold = $VariableStore.smallWidthThreshold.value;

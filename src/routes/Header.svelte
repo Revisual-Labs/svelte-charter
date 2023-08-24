@@ -19,7 +19,7 @@
 			<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
 				<a href="/docs">Docs</a>
 			</li>
-			<li aria-current={$page.url.pathname.startsWith('/sverdle') ? 'page' : undefined}>
+			<li >
 				<a href="https://github.com/Revisual-Labs/chart-starter" target="_blank">Github</a>
 			</li>
 		</ul>

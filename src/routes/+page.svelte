@@ -34,7 +34,7 @@
 			</h1>
 
 			<div class="mt-10 flex items-center justify-center gap-x-6">
-				<Button href="/docs/getting-started" type="normal">Get started</Button>
+				<Button href="/docs/" type="normal">Get started</Button>
 				<Button href="https://github.com/Revisual-Labs/chart-starter" type="green">Github</Button>
 			</div>
 		</div>
