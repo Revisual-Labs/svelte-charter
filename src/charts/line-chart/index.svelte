@@ -16,6 +16,7 @@
         },
     };
 
+	// @variables-start
 	export let width = 500;
 	$: height = $VariableStore.height.value;
 	$: axisSuffix = $VariableStore.axisSuffix.value;
@@ -36,6 +37,7 @@
 	$: strokeWidth = $VariableStore.strokeWidth.value;
 	$: smallWidthThreshold = $VariableStore.smallWidthThreshold.value;
 	let breakCount = 0;
+	// @variables-end
 
 	$: tickFormat = format(tickFormatStyle);
 	$: tooltipFormat = format(toolTipFormatStyle);

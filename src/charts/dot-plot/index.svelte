@@ -5,6 +5,7 @@
     import { onMount } from "svelte";
     import { VariableStore } from "../VariableStore";
     import data2 from "./data.json";
+    // @variables-start
     // The data
     export let data = data2;
     $: country = $VariableStore.country.value;
@@ -56,8 +57,8 @@
     let hideHighlight = false;
     $: selectedData = data.find((d) => d[matchBy] === country);
     $: tooltipFormatFn = format(tooltipFormat);
+    // @variables-end
 
-    $: console.log(xTicks);
     function handleMouseOver(triangle) {
         const countryCode = data[triangle][matchBy];
 
