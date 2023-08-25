@@ -6,15 +6,15 @@ config:
     type: string
     description: Country for the chart
   xProp:
-    value: Total_Migrants
+    value: migrant
     type: string
     description: Property for the x-axis data
   yProp:
-    value: Population
+    value: pop
     type: string
     description: Property for the y-axis data
   matchBy:
-    value: ISO3CountryCode
+    value: iso
     type: string
     description: Property for matching data entries
   numSuffix:

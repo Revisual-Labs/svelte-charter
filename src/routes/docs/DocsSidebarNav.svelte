@@ -9,7 +9,12 @@
 	/**
 	 * @type {ChartObject[]}
 	 */
-	export let list = [];
+	export let list = [
+		{title: 'Line Chart',
+		path: 'line-chart'},
+		{title: 'Dot Plot',
+		path: 'dot-plot'},
+	];
 </script>
 
 <nav >

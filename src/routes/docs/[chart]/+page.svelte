@@ -1,8 +1,15 @@
+
 <script>
-	export let data;
-	import { VariableStore } from '../../../charts/VariableStore.js';
+	import { onMount, beforeUpdate } from 'svelte';
+	import { page } from '$app/stores';
 	import Properties from './Properties.svelte';
-	const { title } = data.props.metadata;
+	import { VariableStore } from '../../../charts/VariableStore';
+	
+	const { component, content, metadata } = $page.data.props;
+	
+	beforeUpdate(() => {
+		VariableStore.set(metadata.config);
+	});
 	
 </script>
 
@@ -10,13 +17,13 @@
 	<div class="min-w-[50%] overflow-y-scroll ">
 		
 		<div class="prose">
-			<svelte:component this={data.props.content} />
+			<svelte:component this={content} />
 		</div>
 	
-		<Properties data = {data.props.metadata.config} />
+		<Properties data = {metadata.config} />
 	</div>
 
 	<div class=" w-full h-full sticky top-6 ">
-		<svelte:component this={data.props.component} />
+		<svelte:component this={component} />
 	</div>
 </section>
