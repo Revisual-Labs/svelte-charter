@@ -1,16 +1,16 @@
 
 <script>
-	import { onMount, beforeUpdate } from 'svelte';
-	import { page } from '$app/stores';
+
 	import Properties from './Properties.svelte';
 	import { VariableStore } from '../../../charts/VariableStore';
 	
-	const { component, content, metadata } = $page.data.props;
-	
-	beforeUpdate(() => {
+	export let data;
+
+	$: ({ metadata, content, component } = data.props);
+
+	$: {
 		VariableStore.set(metadata.config);
-	});
-	
+	}
 </script>
 
 <section class="flex w-full max-w-9xl gap-6 py-8">

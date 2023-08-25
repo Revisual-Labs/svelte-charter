@@ -1,7 +1,7 @@
 <script>
     export let data;
     // Transform the data object into an array of its properties
-    const dataProperties = Object.entries(data);
+    $: dataProperties = Object.entries(data);
     import { VariableStore } from '../../../charts/VariableStore.js';
  </script>
  <div class="py-4 border-t border-slate-100">
