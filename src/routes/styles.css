@@ -62,11 +62,7 @@ body {
 	background-size: 100vw 100vh;
 }
 
-pre {
-	padding: 1rem;
-	font-size: 0.9rem;
-	margin: 1rem 0;
-}
+
 code {
 
 	counter-reset: step;
@@ -132,4 +128,10 @@ code .line::before {
 	color: var(--colour-code-line-numbers);
 	opacity: 0.3;
  
+  }
+
+  pre {
+	background: #fbfbfb;
+	font-size: 0.9rem;
+	padding: 1rem 0;
   }

@@ -2,7 +2,9 @@
 	import Header from './Header.svelte';
 	import './styles.css';
 </script>
-
+<svelte:head>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism-coy.min.css" rel="stylesheet" />
+</svelte:head>
 <div class="app">
 	<Header />
 
