@@ -1,21 +1,25 @@
-
 import { dev } from '$app/environment';
+
 export const csr = dev;
 export const prerender = true;
+
 export async function load({ params }) {
-	console.log(params.chart);
-    const component = await import(`../../../charts/${params.chart}/index.svelte`);
-    const {metadata } = await import(`../../../charts/${params.chart}/readme.md`);
-    const post = await import(`../../../charts/${params.chart}/readme.md`);
-    
+    const [componentModule, postModule, componentCode] = await Promise.all([
+        import(`../../../charts/${params.chart}/index.svelte`),
+        import(`../../../charts/${params.chart}/readme.md`),
+        import(`../../../charts/${params.chart}/index.svelte?raw`)
+    ]);
+
+    const { default: component } = componentModule;
+    const { default: content, metadata } = postModule;
+    const { default: code } = componentCode;
 
     return {
         props: {
-            component: component.default,
-            metadata: metadata,
-            content: post.default,
-			  }
+            component,
+            metadata,
+            content,
+            code
+        }
     };
-
-}  
-
+}

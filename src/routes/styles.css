@@ -16,6 +16,43 @@
 	--column-width: 42rem;
 	--column-margin-top: 4rem;
 	color: var(--color-text);
+	--colour-code-line-numbers: hsla(0, 0%, 100%, 0.8);
+
+	--colour-code-line-highlight: hsl(34 96% 55%);
+ 
+	--colour-code-background-hue: 220;
+ 
+	--colour-code-background-saturation: 13%;
+ 
+	--colour-code-background-lightness: 18%;
+ 
+	--colour-code-background-highlighted: hsl(
+ 
+	  var(--colour-code-background-hue) var(--colour-code-background-saturation)
+ 
+		calc(var(--colour-code-background-lightness) + 5%)
+ 
+	);
+ 
+  
+ 
+	--spacing-px: 1px;
+ 
+	--spacing-px-2: 2px;
+ 
+	--spacing-0: 0;
+ 
+	--spacing-1: 0.25rem;
+ 
+	--spacing-2: 0.5rem;
+ 
+	--spacing-4: 1rem;
+ 
+	--spacing-6: 1.5rem;
+ 
+	--spacing-12: 3rem;
+ 
+	--spacing-18: 4.5rem;
 }
 
 body {
@@ -30,7 +67,13 @@ pre {
 	font-size: 0.9rem;
 	margin: 1rem 0;
 }
+code {
 
+	counter-reset: step;
+ 
+	counter-increment: step 0;
+ 
+  }
 /* code that is not in pre */
 :not(pre) > code {
 	padding: 0.2rem 0.4rem;
@@ -69,3 +112,24 @@ p {
 	line-height: 1.9;
 	margin: 1rem 0;
 }
+
+code .line::before {
+
+	display: inline-block;
+ 
+	content: counter(step);
+ 
+	counter-increment: step;
+ 
+	width: var(--spacing-6);
+ 
+	margin-right: var(--spacing-6);
+ 
+	text-align: right;
+ 
+	font-variant-numeric: tabular-nums;
+ 
+	color: var(--colour-code-line-numbers);
+	opacity: 0.3;
+ 
+  }

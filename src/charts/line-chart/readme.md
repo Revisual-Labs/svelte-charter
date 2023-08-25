@@ -96,7 +96,7 @@ config:
 
 Line chart which supports multiple lines and voronoi hover. It can handle multiple groups, which you can configure in a `dataConig` object.
 
-```js
+```svelte
 // First create a data config object
 let config = {
     Line_1: {
