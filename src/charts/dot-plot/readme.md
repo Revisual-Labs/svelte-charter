@@ -30,15 +30,10 @@ config:
     type: string
     description: Suffix for axis labels
   nameProp:
-    value: CountryName
+    value: name
     type: string
     description: Property for country names
-  percentageCorrector:
-    value: 0.1
-    min: 0
-    max: 1
-    type: number
-    description: Percentage corrector value
+ 
   xTicks:
     value: [10, 20, 30, 40, 50]
     type: numberArray

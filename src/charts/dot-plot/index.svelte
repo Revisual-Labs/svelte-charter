@@ -15,7 +15,7 @@
     $: perSuffix = $VariableStore.perSuffix.value;
     $: axisSuffix =     $VariableStore.axisSuffix.value;
     $: nameProp = $VariableStore.nameProp.value;
-    $: percentageCorrector = $VariableStore.percentageCorrector.value;
+    $: percentageCorrector = 0.1
     $: xTicks = $VariableStore.xTicks.value;
 
     // The chart
