@@ -12,4 +12,3 @@
 </Template>
 
 <Story name="Default" />
-

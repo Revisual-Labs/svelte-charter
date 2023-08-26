@@ -1,174 +1,176 @@
 <script>
     import { line, curveLinear, Delaunay, range, scaleLinear, scaleUtc } from 'd3';
     import data from './line-data';
-
-
-/**
- * @type {number} 
- * the top margin, in pixels
+    
+    /**
+ * @type {number} marginTop - the top margin, in pixels
  */
 export let marginTop = 32;
 
 /**
- * @type {number} 
- * the right margin, in pixels
+ * @type {number} marginRight - the right margin, in pixels
  */
 export let marginRight = 0;
 
 /**
- * @type {number} the bottom margin, in pixels
+ * @type {number} marginBottom - the bottom margin, in pixels
  */
 export let marginBottom = 30;
 
 /**
- * @type {number} the left margin, in pixels
+ * @type {number} marginLeft - the left margin, in pixels
  */
 export let marginLeft = 50;
 
 /**
- * @type {number} inset the default range, in pixels
+ * @type {number} inset - inset the default range, in pixels
  */
 export let inset = 0;
 
 /**
- * @type {number} the outer width of the chart, in pixels
+ * @type {number} width - the outer width of the chart, in pixels
  */
 export let width = 600;
 
 /**
- * @type {number} the outer height of the chart, in pixels
+ * @type {number} height - the outer height of the chart, in pixels
  */
 export let height = 350;
 
 /**
- * @type {string} a label for the x-axis
+ * @type {string} xLabel - a label for the x-axis
  */
 export let xLabel = '';
 
 /**
- * @type {string} a label for the y-axis
+ * @type {string} yLabel - a label for the y-axis
  */
 export let yLabel = '↑ Population (in millions)';
 
 /**
- * @type {string} a format specifier string for the x-axis
+ * @type {string} xFormat - a format specifier string for the x-axis
  */
 export let xFormat = '';
 
 /**
- * @type {string} a format specifier string for the y-axis
+ * @type {string} yFormat - a format specifier string for the y-axis
  */
 export let yFormat = 'm';
 
 /**
- * @type {boolean} show horizontal grid lines
+ * @type {boolean} horizontalGrid - show horizontal grid lines
  */
 export let horizontalGrid = true;
 
 /**
- * @type {boolean}  show vertical grid lines
+ * @type {boolean} verticalGrid - show vertical grid lines
  */
 export let verticalGrid = true;
 
 /**
- * @type {string[]} fill color for dots && number of colors in fill array MUST match number of subsets in data
+ * @type {string[]} colors - fill color for dots && number of colors in fill array MUST match number of subsets in data
  */
 export let colors = ['#F50057', '#42A5F5', '#26A69A', '#9575CD'];
 
 /**
- * @type {boolean} whether dots should be displayed
+ * @type {boolean} showDots - whether dots should be displayed
  */
 export let showDots = true;
 
 /**
- * @type {boolean}  whether dots should be filled or outlined
+ * @type {boolean} dotsFilled - whether dots should be filled or outlined
  */
 export let dotsFilled = true;
 
 /**
- * @type {number} radius of dots, in pixels
+ * @type {number} r - (fixed) radius of dots, in pixels
  */
 export let r = 5;
 
 /**
- * @type {number} stroke width of line, in pixels
+ * @type {number} strokeWidth - stroke width of line, in pixels
  */
 export let strokeWidth = 5;
 
 /**
- * @type {number} stroke opacity of line
+ * @type {number} strokeOpacity - stroke opacity of line
  */
 export let strokeOpacity = 0.8;
 
 /**
- * @type {string}  background color of tooltip
+ * @type {string} tooltipBackground - background color of tooltip
  */
 export let tooltipBackground = 'white';
 
 /**
- * @type {string}  text color of tooltip
+ * @type {string} tooltipTextColor - text color of tooltip
  */
 export let tooltipTextColor = 'black';
 
 /**
- * @type {string}  stroke line cap of the line
- */
+   * @type {string} What background color to use
+   */
 export let strokeLinecap = 'round';
 
 /**
- * @type {string} stroke line join of the line
+ * @type {string} strokeLinejoin - stroke line join of the line
  */
 export let strokeLinejoin = 'round';
 
 /**
- * @type {number} x-axis number of values
+ * @type {number} xScalefactor - x-axis number of values
  */
 export let xScalefactor = width / 80;
 
 /**
- * @type {number} y-axis number of values
+ * @type {number} yScalefactor - y-axis number of values
  */
 export let yScalefactor = height / 40;
 
 /**
- * @type {function} method of interpolation between points
+ * @type {function} curve - method of interpolation between points
  */
 export let curve = curveLinear;
 
 /**
- * @type {function} type of x-scale
+ * @type {function} xType - type of x-scale
  */
 export let xType = scaleUtc;
 
 /**
- * @type {number} inset from top
+ * @type {number} insetTop - inset from top
  */
 export let insetTop = inset;
 
 /**
- * @type {number} inset from right
+ * @type {number} insetRight - inset from right
  */
 export let insetRight = inset;
 
 /**
- * @type {number} inset from bottom
+ * @type {number} insetBottom - inset from bottom
  */
 export let insetBottom = inset;
 
 /**
- * @type {number} inset from left
+ * @type {number} insetLeft - inset from left
  */
 export let insetLeft = inset;
 
-let xRange = [marginLeft + insetLeft, width - marginRight - insetRight];
+/**
+ * @type {number[]} xRange - [left, right]
+ */
+export let xRange = [marginLeft + insetLeft, width - marginRight - insetRight];
 
 /**
  * @type {function} yType - type of y-scale
  */
 export let yType = scaleLinear;
 
- let yRange = [height - marginBottom - insetBottom, marginTop + insetTop];
-
+/**
+ * @type {number[]} yRange - [bottom, top]
+ */
+export let yRange = [height - marginBottom - insetBottom, marginTop + insetTop];
   
     let x, y, dotInfo, lines, xVals = [], yVals = [], points = [], subsets = [], colorVals = [];
     

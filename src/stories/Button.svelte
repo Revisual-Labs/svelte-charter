@@ -9,7 +9,7 @@
   /**
    * @type {string} What background color to use
    */
-  export let backgroundColor = '#ff0';
+  export let backgroundColor = undefined;
 
   /**
    * @type {'small' | 'medium' | 'large'} How large should the button be?
