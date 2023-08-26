@@ -1,243 +1,255 @@
 <script>
-    import { line, curveLinear, Delaunay, range, scaleLinear, scaleUtc } from 'd3';
+    import {
+    line,
+    curveLinear,
+    Delaunay,
+    range,
+    scaleLinear,
+    scaleUtc
+    } from 'd3';
+    
     import data from './line-data';
-    
+
     /**
- * @type {number} marginTop - the top margin, in pixels
- */
-export let marginTop = 32;
+     * @type {number} marginTop - the top margin, in pixels
+     */
+    export let marginTop = 32;
 
-/**
- * @type {number} marginRight - the right margin, in pixels
- */
-export let marginRight = 0;
+    /**
+     * @type {number} marginRight - the right margin, in pixels
+     */
+    export let marginRight = 0;
 
-/**
- * @type {number} marginBottom - the bottom margin, in pixels
- */
-export let marginBottom = 30;
+    /**
+     * @type {number} marginBottom - the bottom margin, in pixels
+     */
+    export let marginBottom = 30;
 
-/**
- * @type {number} marginLeft - the left margin, in pixels
- */
-export let marginLeft = 50;
+    /**
+     * @type {number} marginLeft - the left margin, in pixels
+     */
+    export let marginLeft = 50;
 
-/**
- * @type {number} inset - inset the default range, in pixels
- */
-export let inset = 0;
+    /**
+     * @type {number} inset - inset the default range, in pixels
+     */
+    export let inset = 0;
 
-/**
- * @type {number} width - the outer width of the chart, in pixels
- */
-export let width = 600;
+    /**
+     * @type {number} width - the outer width of the chart, in pixels
+     */
+    export let width = 600;
 
-/**
- * @type {number} height - the outer height of the chart, in pixels
- */
-export let height = 350;
+    /**
+     * @type {number} height - the outer height of the chart, in pixels
+     */
+    export let height = 350;
 
-/**
- * @type {string} xLabel - a label for the x-axis
- */
-export let xLabel = '';
+    /**
+     * @type {string} xLabel - a label for the x-axis
+     */
+    export let xLabel = '';
 
-/**
- * @type {string} yLabel - a label for the y-axis
- */
-export let yLabel = '↑ Population (in millions)';
+    /**
+     * @type {string} yLabel - a label for the y-axis
+     */
+    export let yLabel = '↑ Population (in millions)';
 
-/**
- * @type {string} xFormat - a format specifier string for the x-axis
- */
-export let xFormat = '';
+    /**
+     * @type {string} xFormat - a format specifier string for the x-axis
+     */
+    export let xFormat = '';
 
-/**
- * @type {string} yFormat - a format specifier string for the y-axis
- */
-export let yFormat = 'm';
+    /**
+     * @type {string} yFormat - a format specifier string for the y-axis
+     */
+    export let yFormat = 'm';
 
-/**
- * @type {boolean} horizontalGrid - show horizontal grid lines
- */
-export let horizontalGrid = true;
+    /**
+     * @type {boolean} horizontalGrid - show horizontal grid lines
+     */
+    export let horizontalGrid = true;
 
-/**
- * @type {boolean} verticalGrid - show vertical grid lines
- */
-export let verticalGrid = true;
+    /**
+     * @type {boolean} verticalGrid - show vertical grid lines
+     */
+    export let verticalGrid = true;
 
-/**
- * @type {string[]} colors - fill color for dots && number of colors in fill array MUST match number of subsets in data
- */
-export let colors = ['#F50057', '#42A5F5', '#26A69A', '#9575CD'];
+    /**
+     * @type {string[]} colors - fill color for dots && number of colors in fill array MUST match number of subsets in data
+     */
+    export let colors = ['#F50057', '#42A5F5', '#26A69A', '#9575CD'];
 
-/**
- * @type {boolean} showDots - whether dots should be displayed
- */
-export let showDots = true;
+    /**
+     * @type {boolean} showDots - whether dots should be displayed
+     */
+    export let showDots = true;
 
-/**
- * @type {boolean} dotsFilled - whether dots should be filled or outlined
- */
-export let dotsFilled = true;
+    /**
+     * @type {boolean} dotsFilled - whether dots should be filled or outlined
+     */
+    export let dotsFilled = true;
 
-/**
- * @type {number} r - (fixed) radius of dots, in pixels
- */
-export let r = 5;
+    /**
+     * @type {number} r - (fixed) radius of dots, in pixels
+     */
+    export let r = 5;
 
-/**
- * @type {number} strokeWidth - stroke width of line, in pixels
- */
-export let strokeWidth = 5;
+    /**
+     * @type {number} strokeWidth - stroke width of line, in pixels
+     */
+    export let strokeWidth = 5;
 
-/**
- * @type {number} strokeOpacity - stroke opacity of line
- */
-export let strokeOpacity = 0.8;
+    /**
+     * @type {number} strokeOpacity - stroke opacity of line
+     */
+    export let strokeOpacity = 0.8;
 
-/**
- * @type {string} tooltipBackground - background color of tooltip
- */
-export let tooltipBackground = 'white';
+    /**
+     * @type {string} tooltipBackground - background color of tooltip
+     */
+    export let tooltipBackground = 'white';
 
-/**
- * @type {string} tooltipTextColor - text color of tooltip
- */
-export let tooltipTextColor = 'black';
+    /**
+     * @type {string} tooltipTextColor - text color of tooltip
+     */
+    export let tooltipTextColor = 'black';
 
-/**
-   * @type {string} What background color to use
-   */
-export let strokeLinecap = 'round';
+    /**
+     * @type {string} What background color to use
+     */
+    export let strokeLinecap = 'round';
 
-/**
- * @type {string} strokeLinejoin - stroke line join of the line
- */
-export let strokeLinejoin = 'round';
+    /**
+     * @type {string} strokeLinejoin - stroke line join of the line
+     */
+    export let strokeLinejoin = 'round';
 
-/**
- * @type {number} xScalefactor - x-axis number of values
- */
-export let xScalefactor = width / 80;
+    /**
+     * @type {number} xScalefactor - x-axis number of values
+     */
+    export let xScalefactor = width / 80;
 
-/**
- * @type {number} yScalefactor - y-axis number of values
- */
-export let yScalefactor = height / 40;
+    /**
+     * @type {number} yScalefactor - y-axis number of values
+     */
+    export let yScalefactor = height / 40;
 
-/**
- * @type {function} curve - method of interpolation between points
- */
-export let curve = curveLinear;
+    /**
+     * @type {function} curve - method of interpolation between points
+     */
+    export let curve = curveLinear;
 
-/**
- * @type {function} xType - type of x-scale
- */
-export let xType = scaleUtc;
+    /**
+     * @type {function} xType - type of x-scale
+     */
+    export let xType = scaleUtc;
 
-/**
- * @type {number} insetTop - inset from top
- */
-export let insetTop = inset;
+    /**
+     * @type {number} insetTop - inset from top
+     */
+    export let insetTop = inset;
 
-/**
- * @type {number} insetRight - inset from right
- */
-export let insetRight = inset;
+    /**
+     * @type {number} insetRight - inset from right
+     */
+    export let insetRight = inset;
 
-/**
- * @type {number} insetBottom - inset from bottom
- */
-export let insetBottom = inset;
+    /**
+     * @type {number} insetBottom - inset from bottom
+     */
+    export let insetBottom = inset;
 
-/**
- * @type {number} insetLeft - inset from left
- */
-export let insetLeft = inset;
+    /**
+     * @type {number} insetLeft - inset from left
+     */
+    export let insetLeft = inset;
 
-/**
- * @type {number[]} xRange - [left, right]
- */
-export let xRange = [marginLeft + insetLeft, width - marginRight - insetRight];
+    /**
+     * @type {number[]} xRange - [left, right]
+     */
+    export let xRange = [marginLeft + insetLeft, width - marginRight - insetRight];
 
-/**
- * @type {function} yType - type of y-scale
- */
-export let yType = scaleLinear;
+    /**
+     * @type {function} yType - type of y-scale
+     */
+    export let yType = scaleLinear;
 
-/**
- * @type {number[]} yRange - [bottom, top]
- */
-export let yRange = [height - marginBottom - insetBottom, marginTop + insetTop];
-  
-    let x, y, dotInfo, lines, xVals = [], yVals = [], points = [], subsets = [], colorVals = [];
-    
+    /**
+     * @type {number[]} yRange - [bottom, top]
+     */
+    export let yRange = [height - marginBottom - insetBottom, marginTop + insetTop];
+
+    let x, y, dotInfo, lines, xVals = [],
+        yVals = [],
+        points = [],
+        subsets = [],
+        colorVals = [];
+
     // For a single set of data
     if (!('data' in data[0])) {
-      x = Object.keys(data[0])[0];
-      y = Object.keys(data[0])[1];
-      xVals = data.map((el) => el[x]);
-      yVals = data.map((el) => el[y]);
-      colorVals = data.map((el) => 0);
-      points = data.map((el) => ({
-        x: el[x],
-        y: el[y],
-        color: 0
-      }));
+        x = Object.keys(data[0])[0];
+        y = Object.keys(data[0])[1];
+        xVals = data.map((el) => el[x]);
+        yVals = data.map((el) => el[y]);
+        colorVals = data.map((el) => 0);
+        points = data.map((el) => ({
+            x: el[x],
+            y: el[y],
+            color: 0
+        }));
     }
     // For data with subsets (NOTE: expects 'id' and 'data' keys)
     else {
-      x = Object.keys(data[0]?.data[0])[0];
-      y = Object.keys(data[0]?.data[0])[1];
-      data.forEach((subset, i) => {
-      subset.data.forEach((coordinate) => {
-        xVals.push(coordinate[x]);
-        yVals.push(coordinate[y]);
-        colorVals.push(i);
-        points.push(
-          { 
-            x: coordinate[x],
-            y: coordinate[y],
-            color: i
-          });
-      });
-      subsets.push(subset.id);
-    });
+        x = Object.keys(data[0]?.data[0])[0];
+        y = Object.keys(data[0]?.data[0])[1];
+        data.forEach((subset, i) => {
+            subset.data.forEach((coordinate) => {
+                xVals.push(coordinate[x]);
+                yVals.push(coordinate[y]);
+                colorVals.push(i);
+                points.push(
+                {
+                    x: coordinate[x],
+                    y: coordinate[y],
+                    color: i
+                });
+            });
+            subsets.push(subset.id);
+        });
     }
-  
+
     const I = range(xVals.length);
     const gaps = (d, i) => !isNaN(xVals[i]) && !isNaN(yVals[i]);
     const cleanData = points.map(gaps);
-  
+
     const xDomain = [xVals[0], xVals[xVals.length - 1]];
     const yDomain = [0, Math.max(...yVals)];
     const xScale = xType(xDomain, xRange);
     const yScale = yType(yDomain, yRange);
     const niceY = scaleLinear().domain([0, Math.max(...yVals)]).nice();
-  
+
     const chartLine = line()
-      .defined(i => cleanData[i])
-      .curve(curve)
-      .x(i => xScale(xVals[i]))
-      .y(i => yScale(yVals[i]));
-  
+        .defined(i => cleanData[i])
+        .curve(curve)
+        .x(i => xScale(xVals[i]))
+        .y(i => yScale(yVals[i]));
+
     $: {
-      lines = [];
-      colors.forEach((color, j) => {
-        const filteredI = I.filter((el, i) => colorVals[i] === j);
-        lines.push(chartLine(filteredI));
-      });
+        lines = [];
+        colors.forEach((color, j) => {
+            const filteredI = I.filter((el, i) => colorVals[i] === j);
+            lines.push(chartLine(filteredI));
+        });
     }
-  
+
     const pointsScaled = points.map((el) => [xScale(el.x), yScale(el.y), el.color]);
     const delaunayGrid = Delaunay.from(pointsScaled);
     const voronoiGrid = delaunayGrid.voronoi([0, 0, width, height]);
-    
-    const  xTicks = xScale.ticks(xScalefactor);
-    const  xTicksFormatted = xTicks.map((el) => el.getFullYear());
-    const  yTicks = niceY.ticks(yScalefactor);
+
+    const xTicks = xScale.ticks(xScalefactor);
+    const xTicksFormatted = xTicks.map((el) => el.getFullYear());
+    const yTicks = niceY.ticks(yScalefactor);
   </script>
   
   <div class="chart-container">
