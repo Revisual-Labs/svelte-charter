@@ -1,0 +1,373 @@
+<script>
+    import { line, curveLinear, Delaunay, range, scaleLinear, scaleUtc } from 'd3';
+    import data from './line-data';
+
+
+/**
+ * @type {number} 
+ * the top margin, in pixels
+ */
+export let marginTop = 32;
+
+/**
+ * @type {number} 
+ * the right margin, in pixels
+ */
+export let marginRight = 0;
+
+/**
+ * @type {number} the bottom margin, in pixels
+ */
+export let marginBottom = 30;
+
+/**
+ * @type {number} the left margin, in pixels
+ */
+export let marginLeft = 50;
+
+/**
+ * @type {number} inset the default range, in pixels
+ */
+export let inset = 0;
+
+/**
+ * @type {number} the outer width of the chart, in pixels
+ */
+export let width = 600;
+
+/**
+ * @type {number} the outer height of the chart, in pixels
+ */
+export let height = 350;
+
+/**
+ * @type {string} a label for the x-axis
+ */
+export let xLabel = '';
+
+/**
+ * @type {string} a label for the y-axis
+ */
+export let yLabel = '↑ Population (in millions)';
+
+/**
+ * @type {string} a format specifier string for the x-axis
+ */
+export let xFormat = '';
+
+/**
+ * @type {string} a format specifier string for the y-axis
+ */
+export let yFormat = 'm';
+
+/**
+ * @type {boolean} show horizontal grid lines
+ */
+export let horizontalGrid = true;
+
+/**
+ * @type {boolean}  show vertical grid lines
+ */
+export let verticalGrid = true;
+
+/**
+ * @type {string[]} fill color for dots && number of colors in fill array MUST match number of subsets in data
+ */
+export let colors = ['#F50057', '#42A5F5', '#26A69A', '#9575CD'];
+
+/**
+ * @type {boolean} whether dots should be displayed
+ */
+export let showDots = true;
+
+/**
+ * @type {boolean}  whether dots should be filled or outlined
+ */
+export let dotsFilled = true;
+
+/**
+ * @type {number} radius of dots, in pixels
+ */
+export let r = 5;
+
+/**
+ * @type {number} stroke width of line, in pixels
+ */
+export let strokeWidth = 5;
+
+/**
+ * @type {number} stroke opacity of line
+ */
+export let strokeOpacity = 0.8;
+
+/**
+ * @type {string}  background color of tooltip
+ */
+export let tooltipBackground = 'white';
+
+/**
+ * @type {string}  text color of tooltip
+ */
+export let tooltipTextColor = 'black';
+
+/**
+ * @type {string}  stroke line cap of the line
+ */
+export let strokeLinecap = 'round';
+
+/**
+ * @type {string} stroke line join of the line
+ */
+export let strokeLinejoin = 'round';
+
+/**
+ * @type {number} x-axis number of values
+ */
+export let xScalefactor = width / 80;
+
+/**
+ * @type {number} y-axis number of values
+ */
+export let yScalefactor = height / 40;
+
+/**
+ * @type {function} method of interpolation between points
+ */
+export let curve = curveLinear;
+
+/**
+ * @type {function} type of x-scale
+ */
+export let xType = scaleUtc;
+
+/**
+ * @type {number} inset from top
+ */
+export let insetTop = inset;
+
+/**
+ * @type {number} inset from right
+ */
+export let insetRight = inset;
+
+/**
+ * @type {number} inset from bottom
+ */
+export let insetBottom = inset;
+
+/**
+ * @type {number} inset from left
+ */
+export let insetLeft = inset;
+
+let xRange = [marginLeft + insetLeft, width - marginRight - insetRight];
+
+/**
+ * @type {function} yType - type of y-scale
+ */
+export let yType = scaleLinear;
+
+ let yRange = [height - marginBottom - insetBottom, marginTop + insetTop];
+
+  
+    let x, y, dotInfo, lines, xVals = [], yVals = [], points = [], subsets = [], colorVals = [];
+    
+    // For a single set of data
+    if (!('data' in data[0])) {
+      x = Object.keys(data[0])[0];
+      y = Object.keys(data[0])[1];
+      xVals = data.map((el) => el[x]);
+      yVals = data.map((el) => el[y]);
+      colorVals = data.map((el) => 0);
+      points = data.map((el) => ({
+        x: el[x],
+        y: el[y],
+        color: 0
+      }));
+    }
+    // For data with subsets (NOTE: expects 'id' and 'data' keys)
+    else {
+      x = Object.keys(data[0]?.data[0])[0];
+      y = Object.keys(data[0]?.data[0])[1];
+      data.forEach((subset, i) => {
+      subset.data.forEach((coordinate) => {
+        xVals.push(coordinate[x]);
+        yVals.push(coordinate[y]);
+        colorVals.push(i);
+        points.push(
+          { 
+            x: coordinate[x],
+            y: coordinate[y],
+            color: i
+          });
+      });
+      subsets.push(subset.id);
+    });
+    }
+  
+    const I = range(xVals.length);
+    const gaps = (d, i) => !isNaN(xVals[i]) && !isNaN(yVals[i]);
+    const cleanData = points.map(gaps);
+  
+    const xDomain = [xVals[0], xVals[xVals.length - 1]];
+    const yDomain = [0, Math.max(...yVals)];
+    const xScale = xType(xDomain, xRange);
+    const yScale = yType(yDomain, yRange);
+    const niceY = scaleLinear().domain([0, Math.max(...yVals)]).nice();
+  
+    const chartLine = line()
+      .defined(i => cleanData[i])
+      .curve(curve)
+      .x(i => xScale(xVals[i]))
+      .y(i => yScale(yVals[i]));
+  
+    $: {
+      lines = [];
+      colors.forEach((color, j) => {
+        const filteredI = I.filter((el, i) => colorVals[i] === j);
+        lines.push(chartLine(filteredI));
+      });
+    }
+  
+    const pointsScaled = points.map((el) => [xScale(el.x), yScale(el.y), el.color]);
+    const delaunayGrid = Delaunay.from(pointsScaled);
+    const voronoiGrid = delaunayGrid.voronoi([0, 0, width, height]);
+    
+    const  xTicks = xScale.ticks(xScalefactor);
+    const  xTicksFormatted = xTicks.map((el) => el.getFullYear());
+    const  yTicks = niceY.ticks(yScalefactor);
+  </script>
+  
+  <div class="chart-container">
+    <svg {width} {height} viewBox="0 0 {width} {height}"
+      cursor='crosshair'
+      on:mouseout="{() => dotInfo = null}"
+      on:blur="{() => dotInfo = null}"
+    >
+      <!-- Dots (if enabled) -->
+      {#if showDots && !dotInfo}
+        {#each I as i}
+          <g class='dot' pointer-events='none'>
+            <circle
+              cx={xScale(xVals[i])}
+              cy={yScale(yVals[i])}
+              r={r}
+              stroke={colors[colorVals[i]]}
+              fill={dotsFilled ? colors[colorVals[i]] : 'none'}
+            />
+          </g>
+        {/each}
+      {/if}
+      <!-- Chart lines -->
+      {#each lines as subsetLine, i}
+      <g class='chartlines' pointer-events='none'>
+        {#if dotInfo}
+          <path class="line" fill='none' stroke-opacity={points[dotInfo[1]].color === i ? '1' : '0.1'} stroke={colors[i]} d={subsetLine} stroke-width={strokeWidth} stroke-linecap={strokeLinecap} stroke-linejoin={strokeLinejoin}/>
+          <circle cx={xScale(points[dotInfo[1]].x)} cy={yScale(points[dotInfo[1]].y)} r={r} stroke={colors[points[dotInfo[1]].color]} fill={dotsFilled} />
+        {:else}
+          <path class="line" fill='none' stroke={colors[i]} d={subsetLine}
+            stroke-opacity={strokeOpacity} stroke-width={strokeWidth} stroke-linecap={strokeLinecap} stroke-linejoin={strokeLinejoin} />
+        {/if}
+      </g>
+      {/each}
+      
+      <!-- Y-axis and horizontal grid lines -->
+      <g class="y-axis" transform="translate({marginLeft}, 0)" pointer-events='none'>
+        <path class="domain" stroke="black" d="M{insetLeft}, {marginTop} V{height - marginBottom + 6}"/>
+        {#each yTicks as tick, i}
+          <g class="tick" transform="translate(0, {yScale(tick)})">
+            <line class="tick-start" x1={insetLeft - 6} x2={insetLeft}/>
+            {#if horizontalGrid}
+              <line class="tick-grid" x1={insetLeft} x2={width - marginLeft - marginRight}/>
+            {/if}
+            <text  x="-{marginLeft}" y="5">{tick + yFormat}</text>
+          </g>
+        {/each}
+        <text x="-{marginLeft}" y={marginTop - 10}>{yLabel}</text>
+      </g>
+      <!-- X-axis and vertical grid lines -->
+      <g class="x-axis" transform="translate(0,{height - marginBottom - insetBottom})" pointer-events='none'>
+        <path class="domain" stroke="black" d="M{marginLeft},0.5 H{width - marginRight}"/>
+        {#each xTicks as tick, i}
+          <g class="tick" transform="translate({xScale(tick)}, 0)">
+            <line class="tick-start" stroke='black' y2='6' />
+            {#if verticalGrid}
+              <line class="tick-grid" y2={-height + 70} />
+            {/if}
+            <text font-size='8px' x={-marginLeft/4} y="20">{xTicksFormatted[i] + xFormat}</text>
+          </g>
+        {/each}
+        <text x={width - marginLeft - marginRight - 40} y={marginBottom}>{xLabel}</text>
+      </g>
+  
+      {#each pointsScaled as point, i}
+        <path
+          stroke="none"
+          fill-opacity="0"
+          class="voronoi-cell"
+          d={voronoiGrid.renderCell(i)}
+          on:mouseover="{(e) => dotInfo = [point, i, e] }"
+          on:focus="{(e) => dotInfo = [point, i, e] }"
+        ></path>
+      {/each}
+    </svg>
+  </div>
+  <!-- Tooltip -->
+  {#if dotInfo}
+    <div class="tooltip" style='position:absolute; left:{dotInfo[2].clientX + 12}px; top:{dotInfo[2].clientY + 12}px; pointer-events:none; background-color:{tooltipBackground}; color:{tooltipTextColor}'>
+      {subsets ? subsets[points[dotInfo[1]].color] : ''}:  
+      {points[dotInfo[1]].x.getFullYear()}: {points[dotInfo[1]].y.toFixed(2)}{yFormat}
+    </div>
+  {/if}
+  
+  <style>
+    .chart-container {
+      justify-content: center;
+      align-items: center;
+      margin-top: 50px;
+      margin-left: 8
+      0px;
+    }
+    svg {
+      max-width: 100%;
+      height: auto;
+      height: "intrinsic";
+      margin: auto;
+    }
+    path {
+      fill: "green"
+    }
+    .y-axis {
+      font-size: "10px";
+      font-family: sans-serif;
+      text-anchor: "end";
+    }
+    .x-axis {
+      font-size: "10px";
+      font-family: sans-serif;
+      text-anchor: "end";
+    }
+    .tick {
+      opacity: 1;
+    }
+    .tick-start {
+      stroke: black;
+      stroke-opacity: 1;
+    }
+    .tick-grid {
+      stroke: black;
+      stroke-opacity: 0.2;
+      font-size: "11px";
+      color: black;
+    }
+    .tick text {
+      fill: black;
+      text-anchor: start;
+    }
+  
+    .tooltip{
+      border-radius: 5px;
+      padding: 5px;
+      box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    }
+  </style>
